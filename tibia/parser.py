@@ -3,6 +3,7 @@ import unicodedata
 from datetime import datetime
 from util import normalize_text
 from bs4 import BeautifulSoup
+from model import Tibia
 
 ACCOUNT_STATUS_REGEX = r"(Account\sStatus\:)"
 
@@ -11,20 +12,20 @@ class Parser:
     def parse(self, html):
         parsed = BeautifulSoup(html, "html.parser")
 
-        return {
-            "name": self.extract_name(parsed),
-            "extract_former_name": self.extract_former_name(parsed),
-            "sex": self.extract_sex(parsed),
-            "vocation": self.extract_vocation(parsed),
-            "level": self.extract_level(parsed),
-            "achievement": self.extract_achievement(parsed),
-            "word": self.extract_word(parsed),
-            "residence": self.extract_residence(parsed),
-            "last_login": self.extract_last_login(parsed),
-            "account_status": self.extract_account_status(parsed),
-            "deaths": self.extract_deaths(parsed),
-            "created_at": datetime.utcnow(),
-        }
+        return Tibia (
+            name=self.extract_name(parsed),
+            extract_former_name=self.extract_former_name(parsed),
+            sex=self.extract_sex(parsed),
+            vocation=self.extract_vocation(parsed),
+            level=self.extract_level(parsed),
+            achievement=self.extract_achievement(parsed),
+            residence=self.extract_residence(parsed),
+            world=self.extract_word(parsed),
+            last_login=self.extract_last_login(parsed),
+            account_status=self.extract_account_status(parsed),
+            deaths=self.extract_deaths(parsed),
+            created_at=datetime.utcnow()
+        )
 
     def extract_account_status(self, html):
         result = html.find("td", string=re.compile(ACCOUNT_STATUS_REGEX))
