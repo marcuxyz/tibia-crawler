@@ -1,6 +1,18 @@
+import pytest
 from bs4 import BeautifulSoup
 
 from tibia.parser import Parser
+from util import load_mockup
+
+
+@pytest.fixture
+def resume_html():
+    return load_mockup("resume.html")
+
+
+@pytest.fixture
+def not_found_html():
+    return load_mockup("not_found.html")
 
 
 def test_extract_name(snapshot, resume_html):
@@ -74,3 +86,8 @@ def test_extract_deaths(snapshot, resume_html):
     deaths = Parser().extract_deaths(parsed)
     for death in deaths:
         snapshot.assert_match(death)
+
+
+def test_not_found(snapshot, not_found_html):
+    confirmation = Parser().character_not_found(not_found_html)
+    assert not confirmation == True

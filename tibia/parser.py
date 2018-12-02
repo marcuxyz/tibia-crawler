@@ -87,7 +87,9 @@ class Parser:
             return result
 
     def character_not_found(self, html):
-        pass
+        parsed = BeautifulSoup(html, "html.parser")
+        result = parsed.find(string=re.compile(r"(does\snot\sexist.)"))
+        return not bool(result)
 
     def _get_information(self, result):
         if result:
