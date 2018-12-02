@@ -1,7 +1,7 @@
 import re
 import unicodedata
 from datetime import datetime
-
+from util import normalize_text
 from bs4 import BeautifulSoup
 
 ACCOUNT_STATUS_REGEX = r"(Account\sStatus\:)"
@@ -10,22 +10,20 @@ ACCOUNT_STATUS_REGEX = r"(Account\sStatus\:)"
 class Parser:
     def parse(self, html):
         parsed = BeautifulSoup(html, "html.parser")
-        character_information = parsed.select_one("div.BoxContent table")
 
         return {
-            "name": self.extract_name(character_information),
-            "extract_former_name": self.extract_former_name(character_information),
-            "sex": self.extract_sex(character_information),
-            "vocation": self.extract_vocation(character_information),
-            "level": self.extract_level(character_information),
-            "achievement": self.extract_achievement(character_information),
-            "word": self.extract_word(character_information),
-            "residence": self.extract_residence(character_information),
-            "last_login": self.extract_last_login(character_information),
-            "account_status": self.extract_account_status(character_information),
+            "name": self.extract_name(parsed),
+            "extract_former_name": self.extract_former_name(parsed),
+            "sex": self.extract_sex(parsed),
+            "vocation": self.extract_vocation(parsed),
+            "level": self.extract_level(parsed),
+            "achievement": self.extract_achievement(parsed),
+            "word": self.extract_word(parsed),
+            "residence": self.extract_residence(parsed),
+            "last_login": self.extract_last_login(parsed),
+            "account_status": self.extract_account_status(parsed),
             "deaths": self.extract_deaths(parsed),
-            "all_characters": self.extract_all_characters(parsed),
-            "updated_at": datetime.utcnow(),
+            "created_at": datetime.utcnow(),
         }
 
     def extract_account_status(self, html):
@@ -35,13 +33,12 @@ class Parser:
     def extract_last_login(self, html):
         result = html.find("td", string="Last Login:")
         if result:
-            text = result.find_next("td").text
-            return unicodedata.normalize("NFKD", text).encode("ascii", "ignore")
+            return normalize_text(result.find_next("td").text)
 
     def extract_residence(self, html):
         result = html.find("td", string="Residence:")
         return self._get_information(result)
-
+    
     def extract_word(self, html):
         result = html.find("td", string="World:")
         return self._get_information(result)
@@ -71,10 +68,26 @@ class Parser:
         return self._get_information(result)
 
     def extract_deaths(self, html):
-        pass
+        text = html.find("b", string="Character Deaths")
+        if text:
+            result = []
+            rows = text.find_all_next("tr")
+            
+            for item in rows:
+                if item.text == 'Account Information':
+                    break
 
-    def extract_all_characters(self, html):
-        pass
+                timestamp = normalize_text(item.select_one("td:nth-of-type(1)").text.strip())
+                description = normalize_text(item.select_one("td:nth-of-type(2)").text.strip())
+
+                result.append(
+                    {
+                        "timestamp": timestamp,
+                        "description": description
+                    }
+                )
+            
+            return result
 
     def character_not_found(self, html):
         pass
