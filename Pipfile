@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "==4.0.1"
+yapf = "*"
+rope = "*"
+freezegun = "==0.3.11"
+snapshottest = "==0.5.0"
+
+[packages]
+beautifulsoup4 = "==4.6.3"
+requests = "==2.20.1"
+pymongo = "==3.7.2"
+
+[requires]
+python_version = "3.6"
