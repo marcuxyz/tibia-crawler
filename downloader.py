@@ -13,7 +13,14 @@ class Downloader:
         return response
 
     def post(self, url, data=None, params=None, cookies=None, headers=None):
-        response = self.session.post(url, data=data, params=params, verify=False, headers=headers, cookies=cookies)
+        response = self.session.post(
+            url,
+            data=data,
+            params=params,
+            verify=False,
+            headers=headers,
+            cookies=cookies,
+        )
         response.raise_for_status()
 
         return response

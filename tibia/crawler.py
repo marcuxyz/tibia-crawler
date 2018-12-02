@@ -14,13 +14,9 @@ class Crawler:
         response = self.downlaoder.post(character_url, data=params)
         parsed = self.parser.parse(response.text)
         self.save_data(parsed)
-    
+
     def config_params(self, character):
-        return {
-            "name": character,
-            "Submit.x": 0,
-            "Submit.y": 0
-        }
+        return {"name": character, "Submit.x": 0, "Submit.y": 0}
 
     def save_data(self, data):
         pass

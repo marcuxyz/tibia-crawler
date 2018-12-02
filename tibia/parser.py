@@ -13,32 +13,19 @@ class Parser:
         character_information = parsed.select_one("div.BoxContent table")
 
         return {
-            "name":
-            self.extract_name(character_information),
-            "extract_former_name":
-            self.extract_former_name(character_information),
-            "sex":
-            self.extract_sex(character_information),
-            "vocation":
-            self.extract_vocation(character_information),
-            "level":
-            self.extract_level(character_information),
-            "achievement":
-            self.extract_achievement(character_information),
-            "word":
-            self.extract_word(character_information),
-            "residence":
-            self.extract_residence(character_information),
-            "last_login":
-            self.extract_last_login(character_information),
-            "account_status":
-            self.extract_account_status(character_information),
-            "deaths":
-            self.extract_deaths(parsed),
-            "all_characters":
-            self.extract_all_characters(parsed),
-            "updated_at":
-            datetime.utcnow(),
+            "name": self.extract_name(character_information),
+            "extract_former_name": self.extract_former_name(character_information),
+            "sex": self.extract_sex(character_information),
+            "vocation": self.extract_vocation(character_information),
+            "level": self.extract_level(character_information),
+            "achievement": self.extract_achievement(character_information),
+            "word": self.extract_word(character_information),
+            "residence": self.extract_residence(character_information),
+            "last_login": self.extract_last_login(character_information),
+            "account_status": self.extract_account_status(character_information),
+            "deaths": self.extract_deaths(parsed),
+            "all_characters": self.extract_all_characters(parsed),
+            "updated_at": datetime.utcnow(),
         }
 
     def extract_account_status(self, html):
@@ -49,7 +36,7 @@ class Parser:
         result = html.find("td", string="Last Login:")
         if result:
             text = result.find_next("td").text
-            return unicodedata.normalize('NFKD', text).encode('ascii','ignore')
+            return unicodedata.normalize("NFKD", text).encode("ascii", "ignore")
 
     def extract_residence(self, html):
         result = html.find("td", string="Residence:")

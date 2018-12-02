@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from freezegun import freeze_time
+
 from tibia.parser import Parser
 
 
@@ -15,11 +16,13 @@ def test_extract_name(snapshot, resume_html):
     text = Parser().extract_name(character)
     snapshot.assert_match(text)
 
+
 def test_extract_former_name(snapshot, resume_html):
     parsed = BeautifulSoup(resume_html, "html.parser")
     character = parsed.select_one("div.BoxContent table")
     text = Parser().extract_former_name(character)
     snapshot.assert_match(text)
+
 
 def test_extract_sex(snapshot, resume_html):
     parsed = BeautifulSoup(resume_html, "html.parser")
