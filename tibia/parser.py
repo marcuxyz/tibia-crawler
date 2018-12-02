@@ -1,6 +1,4 @@
 import re
-import unicodedata
-from datetime import datetime
 from util import normalize_text
 from bs4 import BeautifulSoup
 from model import Tibia
@@ -12,7 +10,7 @@ class Parser:
     def parse(self, html):
         parsed = BeautifulSoup(html, "html.parser")
 
-        return Tibia (
+        return Tibia(
             name=self.extract_name(parsed),
             extract_former_name=self.extract_former_name(parsed),
             sex=self.extract_sex(parsed),
@@ -24,7 +22,6 @@ class Parser:
             last_login=self.extract_last_login(parsed),
             account_status=self.extract_account_status(parsed),
             deaths=self.extract_deaths(parsed),
-            created_at=datetime.utcnow()
         )
 
     def extract_account_status(self, html):
@@ -39,7 +36,7 @@ class Parser:
     def extract_residence(self, html):
         result = html.find("td", string="Residence:")
         return self._get_information(result)
-    
+
     def extract_word(self, html):
         result = html.find("td", string="World:")
         return self._get_information(result)
@@ -73,21 +70,20 @@ class Parser:
         if text:
             result = []
             rows = text.find_all_next("tr")
-            
+
             for item in rows:
-                if item.text == 'Account Information':
+                if item.text == "Account Information":
                     break
 
-                timestamp = normalize_text(item.select_one("td:nth-of-type(1)").text.strip())
-                description = normalize_text(item.select_one("td:nth-of-type(2)").text.strip())
-
-                result.append(
-                    {
-                        "timestamp": timestamp,
-                        "description": description
-                    }
+                timestamp = normalize_text(
+                    item.select_one("td:nth-of-type(1)").text.strip()
                 )
-            
+                description = normalize_text(
+                    item.select_one("td:nth-of-type(2)").text.strip()
+                )
+
+                result.append({"timestamp": timestamp, "description": description})
+
             return result
 
     def character_not_found(self, html):

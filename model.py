@@ -16,4 +16,3 @@ class Tibia:
     last_login: str
     account_status: str
     deaths: dict
-    created_at: datetime.datetime

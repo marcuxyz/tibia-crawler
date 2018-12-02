@@ -1,10 +1,9 @@
 from tibia.crawler import Crawler
-from freezegun import freeze_time
 from unittest import mock
 
 
 @mock.patch("downloader.Downloader")
-def test_tibia_search_character(downlaoder_mock, resume_html):
+def test_tibia_search_character(downlaoder_mock, snapshot, resume_html):
     tibia_url = "https://www.tibia.com/"
     character = "Rosha Runner"
     downloader = downlaoder_mock.return_value
@@ -12,3 +11,4 @@ def test_tibia_search_character(downlaoder_mock, resume_html):
 
     crawler = Crawler(tibia_url, downloader)
     parsed = crawler.get_tibia_information(character)
+    snapshot.assert_match(parsed.__dict__)

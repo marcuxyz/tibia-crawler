@@ -2,7 +2,7 @@
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
-from snapshottest import GenericRepr, Snapshot
+from snapshottest import Snapshot
 
 
 snapshots = Snapshot()
@@ -10,7 +10,6 @@ snapshots = Snapshot()
 snapshots['test_tibia_search_character 1'] = {
     'account_status': 'Premium Account',
     'achievement': '141',
-    'created_at': GenericRepr("FakeDatetime(2018, 12, 12, 0, 0)"),
     'deaths': [
         {
             'description': 'Died at Level 543 by a hellflayer.',
@@ -56,5 +55,5 @@ snapshots['test_tibia_search_character 1'] = {
     'residence': 'Roshamuul',
     'sex': 'male',
     'vocation': 'Elder Druid',
-    'word': 'Antica'
+    'world': 'Antica'
 }

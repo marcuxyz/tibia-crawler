@@ -1,13 +1,7 @@
 from bs4 import BeautifulSoup
-from freezegun import freeze_time
 
 from tibia.parser import Parser
 
-
-@freeze_time("2018-12-02 09:00:20")
-def test_parse(snapshot, resume_html):
-    data = Parser().parse(resume_html)
-    snapshot.assert_match(data)
 
 def test_extract_name(snapshot, resume_html):
     parsed = BeautifulSoup(resume_html, "html.parser")
